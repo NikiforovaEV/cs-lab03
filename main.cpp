@@ -26,7 +26,7 @@ vector<size_t> make_histogram(vector<double> numbers, size_t bin_count, double m
         }
         bins[bin]++;
     }
-        return(bins);
+    return(bins);
 }
 
 void show_histogram_text(vector<size_t> bins, size_t number_count)
@@ -112,16 +112,17 @@ void show_histogram_svg(const vector<size_t>& bins)
     //string fill = "green";
     for (size_t bin : bins)
     {
-    const double bin_width = BLOCK_WIDTH * bin;
-    svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
-    svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT, "ûblack", "green");
-    top += BIN_HEIGHT;
+        const double bin_width = BLOCK_WIDTH * bin;
+        svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
+        svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT, "ûblack", "green");
+        top += BIN_HEIGHT;
     }
     svg_end();
 }
 
 int
-main() {
+main()
+{
     // Ââîä äàííûõ
     size_t number_count;
     cerr << "Enter number count: ";
