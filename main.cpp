@@ -104,7 +104,11 @@ int main(int argc, char* argv[])
 {
     if (argc>1)
     {
-        cout<<"argv[0]="<<argv[0];
+        cout << "argc = " << argc << '\n';
+        for (int i = 0; i < argc; i++)
+        {
+            cout<<"argv[" << i<< "] = " << argv[i] << '\n';
+        }
         return(0);
     }
     else
