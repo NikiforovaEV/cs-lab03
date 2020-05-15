@@ -100,15 +100,22 @@ void show_histogram_text(vector<size_t> bins, size_t number_count)
     }
 }
 
-int
-main()
+int main(int argc, char* argv[])
 {
-    curl_global_init(CURL_GLOBAL_ALL);
-    // Ввод данных
-    const auto input = read_input(cin, true);
-    // Обработка данных
-    const auto bins = make_histogram(input);
-    // Вывод данных
-    show_histogram_svg(bins);
-    return 0;
+    if (argc>1)
+    {
+        cout<<"argv[0]="<<argv[0];
+        return(0);
+    }
+    else
+    {
+        curl_global_init(CURL_GLOBAL_ALL);
+        // Ввод данных
+        const auto input = read_input(cin, true);
+        // Обработка данных
+        const auto bins = make_histogram(input);
+        // Вывод данных
+        show_histogram_svg(bins);
+        return 0;
+    }
 }
