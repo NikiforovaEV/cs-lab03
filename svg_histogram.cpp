@@ -32,37 +32,22 @@ void show_histogram_svg(const vector<size_t>& bins)
 {
     const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
-    //const auto TEXT_LEFT = 20;
-    //const auto TEXT_BASELINE = 20;
-    const auto TEXT_HEIGHT = 40;
-    //const auto BIN_HEIGHT = 30;
-    const auto BLOCK_WIDTH = 30;
-    const auto TEXT_WIDTH = BLOCK_WIDTH / 2;
+    const auto TEXT_LEFT = 20;
+    const auto TEXT_BASELINE = 20;
+    const auto TEXT_WIDTH = 50;
+    const auto BIN_HEIGHT = 30;
+    const auto BLOCK_WIDTH = 10;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
-    //svg_text(TEXT_LEFT, TEXT_BASELINE, to_string(bins[0]));
-    //svg_rect(TEXT_WIDTH, 0, bins[0] * BLOCK_WIDTH, BIN_HEIGHT);
     double top = 0;
     string stroke = "black";
     string fill = "green";
-    size_t max_count = 0;
-    for (size_t count : bins)
-    {
-        if (count > max_count)
-        {
-            max_count = count;
-        }
-    }
-    double max_height = 0;
-    double bottom = 0;
-    max_height = IMAGE_HEIGHT - TEXT_HEIGHT;
-    const double scaling_factor = (double)(IMAGE_HEIGHT - TEXT_HEIGHT) / max_count;
     for (size_t bin : bins)
     {
-        const double bin_height = bin * scaling_factor;
-        top = max_height - bin_height;
-        svg_rect(bottom, top, BLOCK_WIDTH, bin_height, "black", "green");
-        svg_text(bottom + TEXT_WIDTH, max_height + TEXT_HEIGHT, to_string(bin));
-        bottom += BLOCK_WIDTH;
+        const double bin_width = BLOCK_WIDTH * bin;
+        svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
+        svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT, "black", "green");
+        top += BIN_HEIGHT;
     }
+
     svg_end();
 }
