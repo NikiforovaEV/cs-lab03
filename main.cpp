@@ -3,6 +3,8 @@
 #include "histogram.h"
 #include "svg_histogram.h"
 #include <curl/curl.h>
+#include <sstream>
+#include <string>
 
 using namespace std;
 
@@ -38,6 +40,15 @@ Input read_input(istream& in, bool prompt)
     cin >> bin_count;
     data.bin_count = bin_count;
     return data;
+}
+
+Input
+download(const string& address) {
+    stringstream buffer;
+
+    // TODO: заполнить буфер.
+
+    return read_input(buffer, false);
 }
 
 vector<size_t> make_histogram(Input data)
@@ -111,6 +122,7 @@ int main(int argc, char* argv[])
             CURLcode res;
             curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
             res = curl_easy_perform(curl);
+            res = CURLE_FAILED_INIT;
             if (res != CURLE_OK)
             {
                 cout << curl_easy_strerror(res) << endl;
