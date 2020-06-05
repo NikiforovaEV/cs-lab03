@@ -102,18 +102,21 @@ void show_histogram_text(vector<size_t> bins, size_t number_count)
 
 int main(int argc, char* argv[])
 {
+    curl_global_init(CURL_GLOBAL_ALL);
     if (argc>1)
     {
-        cout << "argc = " << argc << '\n';
-        for (int i = 0; i < argc; i++)
+        CURL* curl = curl_easy_init();
+        if(curl)
         {
-            cout<<"argv[" << i<< "] = " << argv[i] << '\n';
+            CURLcode res;
+            curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
+            res = curl_easy_perform(curl);
+            curl_easy_cleanup(curl);
         }
         return(0);
     }
     else
     {
-        curl_global_init(CURL_GLOBAL_ALL);
         // ¬вод данных
         const auto input = read_input(cin, true);
         // ќбработка данных
