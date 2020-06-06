@@ -13,7 +13,12 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="C:/Users/Omen/Desktop/lab_03/curl/include" />
 				</Compiler>
+				<Linker>
+					<Add library="libcurl.dll.a" />
+					<Add directory="C:/Users/Omen/Desktop/lab_03/curl/lib" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/lab_03" prefix_auto="1" extension_auto="1" />
@@ -32,7 +37,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="histogram.cpp" />
+		<Unit filename="histogram.h" />
+		<Unit filename="lab_03-test.cbp" />
 		<Unit filename="main.cpp" />
+		<Unit filename="svg_histogram.cpp" />
+		<Unit filename="svg_histogram.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
