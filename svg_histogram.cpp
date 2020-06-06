@@ -28,6 +28,25 @@ void svg_text(double left, double baseline, string text)
 
 }
 
+void poisk_max_count(const vector<size_t>& bins, double& max_count)
+{
+    if (bins.size() == 0)
+    {
+        return;
+    }
+    else
+    {
+        max_count = bins[0];
+        for (size_t count : bins)
+        {
+            if (count > max_count)
+            {
+                max_count = count;
+            }
+        }
+    }
+}
+
 void show_histogram_svg(const vector<size_t>& bins)
 {
     const auto IMAGE_WIDTH = 400;
@@ -44,14 +63,8 @@ void show_histogram_svg(const vector<size_t>& bins)
     double top = 0;
     string stroke = "black";
     string fill = "green";
-    size_t max_count = 0;
-    for (size_t count : bins)
-    {
-        if (count > max_count)
-        {
-            max_count = count;
-        }
-    }
+    double max_count;
+    poisk_max_count(bins, max_count);
     double max_height = 0;
     double bottom = 0;
     max_height = IMAGE_HEIGHT - TEXT_HEIGHT;

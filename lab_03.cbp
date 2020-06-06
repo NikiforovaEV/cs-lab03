@@ -32,7 +32,12 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename=".gitignore" />
+		<Unit filename="histogram.cpp" />
+		<Unit filename="histogram.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="svg_histogram.cpp" />
+		<Unit filename="svg_histogram.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />
