@@ -3,6 +3,8 @@
 #include "histogram.h"
 #include "svg_histogram.h"
 #include <windows.h>
+#include <string.h>
+#include <sstream>
 
 using namespace std;
 
@@ -73,33 +75,8 @@ void show_histogram_text(vector<size_t> bins, size_t number_count)
     }
 }
 
-int
-main()
+int main()
 {
-    DWORD mask = 0x0000ffff;
-    DWORD mask_major = 0b00000000'00000000'00000000'11111111;
-    DWORD info = GetVersion();
-    DWORD build;
-    DWORD platform = info >> 16;
-    DWORD version = info & mask;
-    DWORD version_major = version & mask_major;
-    DWORD version_minor = version >> 8;
-    printf("Version_10 is %u\n", version);
-    printf("Version_16 is %x\n", version);
-    printf("Version_10M is %u\n",version_major);
-    printf("Version_16M is %x\n",version_major);
-    printf("Version_10m is %u\n",version_minor);
-    printf("Version_16m is %x\n",version_minor);
-    if ((info & 0x80000000) == 0)
-    {
-        build = platform;
-        printf("Windows v%u.%u (build %u)\n", version_major, version_minor, build);
-    }
-    char system_name[MAX_COMPUTERNAME_LENGTH + 1];
-    DWORD size = sizeof(system_name);
-    GetComputerNameA(system_name, &size);
-    printf("Computer name: %s", system_name);
-    return 0;
     // Ввод данных
     size_t number_count;
     cerr << "Enter number count: ";
@@ -121,5 +98,5 @@ main()
 
     // Вывод данных
     show_histogram_svg(bins);
-
+    return 0;
 }

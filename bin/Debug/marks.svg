@@ -1,3 +1,4 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<svg width='400' height='300' viewBox='0 0 400 300' xmlns='http://www.w3.org/2000/svg'>
-<rect x='0' y='156' width='30' height='104' stroke='black' fill='green' /><text x='15' y='300'>2</text><rect x='30' y='0' width='30' height='260' stroke='black' fill='green' /><text x='45' y='300'>5</text><rect x='60' y='104' width='30' height='156' stroke='black' fill='green' /><text x='75' y='300'>3</text></svg>
+<svg width='600' height='300' viewBox='0 0 600 300' xmlns='http://www.w3.org/2000/svg'>
+<rect x='0' y='132' width='30' height='88' stroke='black' fill='green' /><text x='15' y='260'>2</text><rect x='30' y='0' width='30' height='220' stroke='black' fill='green' /><text x='45' y='260'>5</text><rect x='60' y='88' width='30' height='132' stroke='black' fill='green' /><text x='75' y='260'>3</text><text x='15' y='300'>Windows v6.2(build 9200)
+Computer name: LAPTOP-UIUNQ9FA</text></svg>
