@@ -3,6 +3,7 @@
 #include "histogram.h"
 #include "svg_histogram.h"
 #include <curl/curl.h>
+#include <windows.h>
 #include <string>
 #include <sstream>
 
