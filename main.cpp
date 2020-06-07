@@ -79,6 +79,7 @@ main()
     DWORD mask = 0x0000ffff;
     DWORD mask_major = 0b00000000'00000000'00000000'11111111;
     DWORD info = GetVersion();
+    DWORD build;
     DWORD platform = info >> 16;
     DWORD version = info & mask;
     DWORD version_major = version & mask_major;
@@ -91,11 +92,8 @@ main()
     printf("Version_16m is %x\n",version_minor);
     if ((info & 0x80000000) == 0)
     {
-    printf("minor_bit is %u", 0);
-    }
-    else
-    {
-        printf("minor_bit is %u", 1);
+        build = platform;
+        printf("Windows v%u.%u (build %u)\n", version_major, version_minor, build);
     }
     return 0;
     // ¬вод данных
