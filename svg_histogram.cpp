@@ -1,6 +1,8 @@
-#include "svg_histogram.h"
 #include <iostream>
 #include <vector>
+#include "svg_histogram.h"
+
+using namespace std;
 
 void svg_begin(double width, double height)
 {
@@ -25,29 +27,50 @@ void svg_rect(double x, double y, double width, double height, string stroke, st
 void svg_text(double left, double baseline, string text)
 {
     cout << "<text x='" << left << "' y='" << baseline << "'>" << text << "</text>";
-
 }
 
-void show_histogram_svg(const vector<size_t>& bins)
+void poisk_max_count(const vector<size_t>& bins, double& max_count)
+{
+    if (bins.size() == 0)
+    {
+        return;
+    }
+    else
+    {
+        max_count = bins[0];
+        for (size_t count : bins)
+        {
+            if (count > max_count)
+            {
+                max_count = count;
+            }
+        }
+    }
+}
+
+void show_histogram_svg(const vector<size_t>& bins, string stroke)
 {
     const auto IMAGE_WIDTH = 400;
     const auto IMAGE_HEIGHT = 300;
-    const auto TEXT_LEFT = 20;
-    const auto TEXT_BASELINE = 20;
-    const auto TEXT_WIDTH = 50;
-    const auto BIN_HEIGHT = 30;
-    const auto BLOCK_WIDTH = 10;
+    const auto TEXT_HEIGHT = 40;
+    const auto BLOCK_WIDTH = 30;
+    const auto TEXT_WIDTH = BLOCK_WIDTH / 2;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
     double top = 0;
-    string stroke = "black";
     string fill = "green";
+    double max_count;
+    poisk_max_count(bins, max_count);
+    double max_height = 0;
+    double bottom = 0;
+    max_height = IMAGE_HEIGHT - TEXT_HEIGHT;
+    const double scaling_factor = (double)(IMAGE_HEIGHT - TEXT_HEIGHT) / max_count;
     for (size_t bin : bins)
     {
-        const double bin_width = BLOCK_WIDTH * bin;
-        svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
-        svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT, stroke, fill);
-        top += BIN_HEIGHT;
+        const double bin_height = bin * scaling_factor;
+        top = max_height - bin_height;
+        svg_rect(bottom, top, BLOCK_WIDTH, bin_height, stroke, "green");
+        svg_text(bottom + TEXT_WIDTH, max_height + TEXT_HEIGHT, to_string(bin));
+        bottom += BLOCK_WIDTH;
     }
-
     svg_end();
 }

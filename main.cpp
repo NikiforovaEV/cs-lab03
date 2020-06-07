@@ -3,17 +3,64 @@
 #include "histogram.h"
 #include "svg_histogram.h"
 #include <curl/curl.h>
-#include <sstream>
 #include <string>
+#include <sstream>
 
 using namespace std;
 
-vector<double> input_numbers(istream& in, size_t count)
+struct Options
+{
+    string stroke;
+    bool stroke_veracity;
+    bool violation;
+    char* url;
+};
+
+Options parse_args(int argc, char** argv)
+{
+    Options opt;
+    opt.url=0;
+    opt.stroke_veracity = false;
+    opt.violation = false;
+    for (int i = 1; i < argc; i++)
+    {
+        if (argv[i][0] == '-')
+        {
+            if(string(argv[i]) == "-stroke")
+            {
+                if(i + 1 < argc)
+                {
+                    opt.stroke = string(argv[i+1]);
+                    if (opt.stroke.size())
+                    {
+                        opt.stroke_veracity = true;
+                        i++;
+                    }
+                    else
+                    {
+                        opt.violation = true;
+                    }
+                }
+                else
+                {
+                    opt.violation = true;
+                }
+            }
+        }
+        else
+        {
+            opt.url = argv[i];
+        }
+    }
+    return opt;
+}
+
+vector<double> input_numbers(istream& in, const size_t count)
 {
     vector<double> result(count);
     for (size_t i = 0; i < count; i++)
     {
-        cin >> result[i];
+        in >> result[i];
     }
     return result;
 }
@@ -21,24 +68,24 @@ vector<double> input_numbers(istream& in, size_t count)
 Input read_input(istream& in, bool prompt)
 {
     Input data;
+    size_t number_count;
     if (prompt)
     {
         cerr << "Enter number count: ";
-    }
-    size_t number_count;
-    cin >> number_count;
-    if (prompt)
-    {
+        in >> number_count;
+
         cerr << "Enter numbers: ";
-    }
-    data.numbers = input_numbers(in, number_count);
-    if (prompt)
-    {
+        data.numbers = input_numbers(in, number_count);
+
         cerr << "Enter column count: ";
+        in >> data.bin_count;
     }
-    size_t bin_count;
-    cin >> bin_count;
-    data.bin_count = bin_count;
+    else
+    {
+        in >> number_count;
+        data.numbers = input_numbers(in, number_count);
+        in >> data.bin_count;
+    }
     return data;
 }
 
@@ -48,52 +95,32 @@ size_t write_data(void* items, size_t item_size, size_t item_count, void* ctx)
     const char* new_items = reinterpret_cast<const char*>(items);
     stringstream* buffer = reinterpret_cast<stringstream*>(ctx);
     buffer->write(new_items, data_size);
-    return 0;
+    return data_size;
 }
 
-Input download(const string& address)
+Input download(const string& address, const Options &opt)
 {
     stringstream buffer;
     curl_global_init(CURL_GLOBAL_ALL);
     CURL* curl = curl_easy_init();
-        if(curl)
-        {
-            CURLcode res;
-            curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
-            res = curl_easy_perform(curl);
-            res = CURLE_FAILED_INIT;
-            if (res != CURLE_OK)
-            {
-                cout << curl_easy_strerror(res) << endl;
-                exit(1);
-            }
-            curl_easy_cleanup(curl);
-        }
-
-    return read_input(buffer, false);
-}
-
-vector<size_t> make_histogram(Input data)
-{
-    double min;
-    double max;
-    find_minmax(data.numbers, min, max);
-    vector<size_t> bins(data.bin_count);
-    for (double number : data.numbers)
+    if(curl)
     {
-        size_t bin = (size_t)((number - min) / (max - min) * data.bin_count);
-        if (bin == data.bin_count)
+        CURLcode res;
+        curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+        res = curl_easy_perform(curl);
+        if (res != CURLE_OK)
         {
-            bin--;
+            cout << curl_easy_strerror(res) << endl;
+            exit(1);
         }
-        bins[bin]++;
+        curl_easy_cleanup(curl);
     }
-    return(bins);
+   return read_input(buffer, false);
 }
 
-void show_histogram_text(vector<size_t> bins, size_t number_count)
+/*void show_histogram_text(vector<size_t> bins, size_t number_count)
 {
     const size_t SCREEN_WIDTH = 80;
     const size_t MAX_ASTERISK = SCREEN_WIDTH - 4 - 1;
@@ -133,22 +160,26 @@ void show_histogram_text(vector<size_t> bins, size_t number_count)
         }
         cout << '\n';
     }
-}
+}*/
 
 int main(int argc, char* argv[])
 {
-    Input input;
-    if (argc>1)
+   Input input;
+   Options opt = parse_args(argc,argv);
+    if (opt.violation)
     {
-        input = download(argv[1]);
+        cerr<<"Error";
+        return 1;
+    }
+    if (opt.url)
+    {
+        input = download(opt.url,opt);
     }
     else
     {
         input = read_input(cin, true);
     }
-        // Обработка данных
-        const auto bins = make_histogram(input);
-        // Вывод данных
-        show_histogram_svg(bins);
-        return 0;
+    const auto bins = make_histogram(input);
+    show_histogram_svg(bins,opt.stroke);
+    return 0;
 }
