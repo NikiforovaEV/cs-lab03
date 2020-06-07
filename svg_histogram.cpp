@@ -51,25 +51,6 @@ void poisk_max_count(const vector<size_t>& bins, double& max_count)
     }
 }
 
-void poisk_max_count(const vector<size_t>& bins, double& max_count)
-{
-    if (bins.size() == 0)
-    {
-        return;
-    }
-    else
-    {
-        max_count = bins[0];
-        for (size_t count : bins)
-        {
-            if (count > max_count)
-            {
-                max_count = count;
-            }
-        }
-    }
-}
-
 string make_info_text()
 {
     stringstream buffer;
