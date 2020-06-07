@@ -76,11 +76,19 @@ void show_histogram_text(vector<size_t> bins, size_t number_count)
 int
 main()
 {
-    DWORD mask = 0b00000000'00000000'11111111'11111111;
+    DWORD mask = 0x0000ffff;
+    DWORD mask_major = 0b00000000'00000000'00000000'11111111;
     DWORD info = GetVersion();
+    DWORD platform = info >> 16;
     DWORD version = info & mask;
-    printf("Version is %u\n", version);
-    printf("Version is %x\n", version);
+    DWORD version_major = version & mask_major;
+    DWORD version_minor = version >> 8;
+    printf("Version_10 is %u\n", version);
+    printf("Version_16 is %x\n", version);
+    printf("Version_10M is %u\n",version_major);
+    printf("Version_16M is %x\n",version_major);
+    printf("Version_10m is %u\n",version_minor);
+    printf("Version_16m is %x\n",version_minor);
     return 0;
     // ¬вод данных
     size_t number_count;
