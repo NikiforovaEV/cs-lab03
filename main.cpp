@@ -2,6 +2,7 @@
 #include <vector>
 #include "histogram.h"
 #include "svg_histogram.h"
+#include <windows.h>
 
 using namespace std;
 
@@ -75,6 +76,9 @@ void show_histogram_text(vector<size_t> bins, size_t number_count)
 int
 main()
 {
+    printf("Version is %u\n", GetVersion());
+    printf("Version is %x\n", GetVersion());
+    return 0;
     // Ввод данных
     size_t number_count;
     cerr << "Enter number count: ";
@@ -96,5 +100,5 @@ main()
 
     // Вывод данных
     show_histogram_svg(bins);
-    return 0;
+
 }
