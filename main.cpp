@@ -89,6 +89,14 @@ main()
     printf("Version_16M is %x\n",version_major);
     printf("Version_10m is %u\n",version_minor);
     printf("Version_16m is %x\n",version_minor);
+    if ((info & 0x80000000) == 0)
+    {
+    printf("minor_bit is %u", 0);
+    }
+    else
+    {
+        printf("minor_bit is %u", 1);
+    }
     return 0;
     // ¬вод данных
     size_t number_count;
