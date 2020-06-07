@@ -95,6 +95,10 @@ main()
         build = platform;
         printf("Windows v%u.%u (build %u)\n", version_major, version_minor, build);
     }
+    char system_name[MAX_COMPUTERNAME_LENGTH + 1];
+    DWORD size = sizeof(system_name);
+    GetComputerNameA(system_name, &size);
+    printf("Computer name: %s", system_name);
     return 0;
     // ¬вод данных
     size_t number_count;
